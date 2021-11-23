@@ -112,4 +112,3 @@ https://whimsical.com/QXrivn15qDwcgEha6WAdur
 본 페이지를 통해 제공하는 모든 자료는 저작권법에 의해 보호받는 ㈜엘리스의 자산이며, 무단 사용 및 도용, 복제 및 배포를 금합니다.
 
 Copyright 2021 엘리스 Inc. All rights reserved.
-
