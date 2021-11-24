@@ -38,7 +38,6 @@ def register():
     else:
         return render_template('register.html')
 
-
 @app.route("/logout")
 def logout():
     session['logged_in'] = False
