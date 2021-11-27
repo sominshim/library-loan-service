@@ -1,83 +1,33 @@
-<!DOCTYPE HTML>
+{% extends 'base.html' %}
 
-<html>
+{% block content %}
+<div class="container">
+    <h2>도서 목록</h2>
+    
+    <div class="row row-cols-2 row-cols-lg-4 g-2 g-lg-3">  
+    {% for book in book_list %}
+    <div class="col">
+      <div class="card book-card shadow-sm h-100">
+          <a href="{{ url_for('book_detail', id=book.id)}}"><img class="book-image card-img-top" width="100%" height="150" style="object-fit: scale-down;" src="{{ url_for('static', filename='images/{}'.format(book.img_path)) }}" focusable="false"> </img></a>
+  
+          <div class="card-body">
+              <h5 class="card-title book-title" alt="{{ book.book_name }}"><a class="card-link" href="{{ url_for('book_detail', id=book.id)}}">{{ book.book_name }}</a></h5>
+  
+              <div class="row align-items-center">
+                  <div class="col col-7">
+                      <h6 class="card-subtitle mb-2 text-muted">{{book.author}}</h6>
+                  </div>
+                  <div class="col me-auto text-end">
+                      <h6 style="font-size:0.8em;" class="card-subtitle mb-2 text-muted">{{book.stock}} 권 남음</h6>
+                  </div>
+                  <div class="align-self-end">
+                      <a href="#" class="btn btn-primary">대여하기</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  {% endfor %} 
+</div>
 
-<head>
-    <title>Elice Library</title>
-    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}" > </script>
-    <script src="{{ url_for('static', filename='js/jquery.js') }}" > </script>
-    <link href="{{url_for('static',filename='css/bootstrap.min.css')}}" rel="stylesheet">
-    <style>
-        .wrap {
-            width: 680px;
-            margin: 10px auto;
-        }
-
-        .title {
-            text-align: center;
-        }
-    </style>
-    {% block scripts %}
-    {% endblock %}
-</head>
-
-<body>
-    <div class="wrap">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">Elice Library</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <a class="nav-link" href="/login">로그인</a>
-                        <a class="nav-link" href="/register">회원가입</a>
-                        <a class="nav-link" href="/logout">로그아웃</a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-        <hr>
-        {% block content %}
-        {% endblock %}
-    </div>
-        <section class="tiles">
-            <article class="style1">
-                <div class="image">
-                    <img src="{{url_for('static', filename='images/1.png')}}" alt="Groovy Apparel">
-                </div>
-            </article>
-            <article class="style2">
-                <div class="image">
-                    <img src="{{url_for('static', filename='images/2.png')}}" alt="Groovy Apparel">
-                </div>
-            </article>
-            <article class="style3">
-                <div class="image">
-                    <img src="{{url_for('static', filename='images/3.png')}}" alt="Groovy Apparel">
-                </div>
-            </article>
-            <article class="style4">
-                <div class="image">
-                    <img src="{{url_for('static', filename='images/4.jpg')}}" alt="Groovy Apparel">
-                </div>
-            </article>
-            <article class="style4">
-                <div class="image">
-                    <img src="{{url_for('static', filename='images/5.jpg')}}" alt="Groovy Apparel">
-                </div>
-            </article>
-            <article class="style4">
-                <div class="image">
-                    <img src="{{url_for('static', filename='images/6.jpg')}}" alt="Groovy Apparel">
-                </div>
-            </article>
-        </section>
-        
-    </div>
-</body>
-
-</html>
+{% endblock %}

@@ -1,15 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>HTML for python flask</title>
-</head>
+{% extends 'base.html' %}
 
-<body>
-    <form action = "" method="post">
-        <p>name : <input type="text" id = "username" name = "username"></p>
-        <p>password : <input type="password" id = "password" name = "password"></p>
-        <p>이름과 비밀번호를 입력하고 로그인버튼을 누르세요.<br><input type = "submit" value = "로그인"/> </p>
+{% block content %}
+
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+<h1>Login!</h1>
+<br/><br/>
+    
+
+<div class="shadow p-3 mb-5 bg-body rounded">
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control") }}
+        <br/>
+    
+        {{ form.password.label(class="form-label") }}
+        {{ form.password(class="form-control") }}
+        <br/>
+
+        {{ form.submit(class="btn btn-primary") }}
     </form>
-</body>
-</html>
+</div>
+
+{% endblock %}
