@@ -1,6 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{% if get_flashed_messages() %}
+    {% for messeage in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ messeage }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
 <div class="card mb-3 p-3" >
   <h5 class="border-bottom pb-2">책 소개</h5>
   <div class="row justify-content-evenly align-items-center">
@@ -20,69 +30,10 @@
             <strong>페이지: </strong>{{book.pages}}<br>
             <strong>ISBN: </strong>{{book.isbn}}<br>
           </p> 
-        <div class ="col-6">
-          {%if not is_rented%}
-          <button type="button" class="btn btn-md btn-primary" data-bs-toggle="modal" data-bs-target="#rentalModal">대여하기</button>
-          <small class="text-muted">
-              &nbsp;&nbsp;&nbsp;{{book.stock}} 권 남음</small> 
-          {% else %}
-          <button type="button" class="btn btn-md btn-danger" data-bs-toggle="modal" data-bs-target="#returnModal">반납하기</button>
-          <small class="text-muted">
-              &nbsp;&nbsp;&nbsp;{book.stock}} 권 남음</small> 
-          {% endif %}
-      </div>   
       </div>
     </div>
   </div>
 </div>
-{% if not is_rented %}
-<div class="modal fade" id="rentalModal" tabindex="-1" aria-labelledby="rentalModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-   <div class="modal-content ">
-    <div class="modal-header">
-      <h5 class="modal-title" id="rentalModalLabel">책을 대여하시겠습니까?</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-      "<strong>{{book.book_name}}</strong>" 
-      <p>책을 대여하시겠습니까? 한번 더 확인해주세요.</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요.</button> 
-
-      <form method="POST" action="#">  
-        <input type="hidden" name="book_id" id="book_id" value="{{book.id}}">
-        <button type="submit" class="btn btn-primary">빌릴게요</button>
-      </form>
-    </div>
-   </div>
-  </div>
-</div>
-{% else %}
-
-<div class="modal fade" id="returnModal" tabindex="-1" aria-labelledby="returnModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-   <div class="modal-content ">
-    <div class="modal-header">
-      <h5 class="modal-title" id="returnModalLabel">책을 반납하시겠습니까?</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-      "<strong>{{book.book_name}}</strong>" 
-      <p>책을 반납하시겠습니까? 한번 더 확인해주세요.</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요.</button> 
-
-      <form method="POST" action="#">  
-        <input type="hidden" name="book_id" id="book_id" value="{{book.id}}">
-        <button type="submit" class="btn btn-primary">반납 할게요</button>
-      </form>
-    </div>
-   </div>
-  </div>
-</div>
-{% endif %}
 
 <!-- 댓글 작성 -->
 <div class="card p-3 mb-5 bg-body rounded">
@@ -93,27 +44,27 @@
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
               <legend class="col-form-label pt-0 " style="text-align: right;">점수: &nbsp;&nbsp;</legend>
 
-              <div class="col-sm-5">
+              <div class="col-sm-6">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="score" id="score" value="5" required>
+                  <label class="form-check-label"> ★★★★★ </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="score" id="score" value="4" required>
+                  <label class="form-check-label"> ★★★★☆ </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="score" id="score" value="3" required>
+                  <label class="form-check-label"> ★★★☆☆ </label>
+                </div>
                   <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="score" id="score" value="1" required>
-                      <label class="form-check-label"> ★ </label>
+                    <input class="form-check-input" type="radio" name="score" id="score" value="2" required>
+                    <label class="form-check-label"> ★★☆☆☆ </label>
                   </div>
-                  <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="score" id="score" value="2" required>
-                      <label class="form-check-label"> ★★ </label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="score" id="score" value="3" required>
-                      <label class="form-check-label"> ★★★ </label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="score" id="score" value="4" required>
-                      <label class="form-check-label"> ★★★★ </label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="score" id="score" value="5" required>
-                      <label class="form-check-label"> ★★★★★ </label>
-                  </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="score" id="score" value="1" required>
+                    <label class="form-check-label"> ★☆☆☆☆ </label>
+                </div>
               </div>              
           </div>
       </fieldset>
@@ -143,12 +94,12 @@
         <div class="card-body">
           <p class="card-text">
             {% if review.score == 5 %} ★★★★★
-            {% elif review.score == 4 %} ★★★★
-            {% elif review.score == 3 %} ★★★
-            {% elif review.score == 2 %} ★★
-            {% else %} ★
+            {% elif review.score == 4 %} ★★★★☆
+            {% elif review.score == 3 %} ★★★☆☆
+            {% elif review.score == 2 %} ★★☆☆☆
+            {% else %} ★☆☆☆☆
             {% endif %}
-        </p>
+          </p>
           <p class="card-text">{{review.content}}</p>
         </div>    
       </div>
