@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if get_flashed_messages() %}
+    {% for messeage in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ messeage }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="card mb-3 p-3" >
+  <h5 class="border-bottom pb-2">책 소개</h5>
+  <div class="row justify-content-evenly align-items-center">
+    <div class="col-md-4">
+      <img class="img-fluid rounded-start" width="100%" height="150" style="object-fit: scale-down;" style="object-fit: scale-down;" src="{{ url_for('static', filename='images/{}'.format(book.img_path)) }}" alt="{{book.book_name}}"/>
+    </div>
+
+
+    <div class="col-md-5">
+      <div class="card-body">
+        <h5 class="card-title">{{book.book_name}}</h5>
+        <p class="card-text">{{book.descrip}}</p>
+        <p class="card-text">
+          <strong>저자: </strong>{{book.author}}<br>
+            <strong>출판사: </strong>{{book.publisher}}<br>
+            <strong>출간일: </strong>{{book.publication_date | datetime }}<br>
+            <strong>페이지: </strong>{{book.pages}}<br>
+            <strong>ISBN: </strong>{{book.isbn}}<br>
+          </p> 
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 댓글 작성 -->
+<div class="card p-3 mb-5 bg-body rounded">
+  <form action="{{url_for('book_review', id=book.id)}}" method="POST" > 
+    <input type="hidden" name="act" id="act" value ="write">
+      <h5 class="border-bottom pb-2">댓글 작성하기</h5>
+      <fieldset class="row">
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <legend class="col-form-label pt-0 " style="text-align: right;">점수: &nbsp;&nbsp;</legend>
+
+              <div class="col-sm-6">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="score" id="score" value="5" required>
+                  <label class="form-check-label"> ★★★★★ </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="score" id="score" value="4" required>
+                  <label class="form-check-label"> ★★★★☆ </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="score" id="score" value="3" required>
+                  <label class="form-check-label"> ★★★☆☆ </label>
+                </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="score" id="score" value="2" required>
+                    <label class="form-check-label"> ★★☆☆☆ </label>
+                  </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="score" id="score" value="1" required>
+                    <label class="form-check-label"> ★☆☆☆☆ </label>
+                </div>
+              </div>              
+          </div>
+      </fieldset>
+      <div class="row">
+          <div class="col col-12">
+              <div class="form-floating comment-box-form p-2 mb-2">
+                  <input class="form-control" name="content" id="content" required></textarea>
+                  <label for="content" class="mt-2 ms-2" for="content">내용</label>
+              </div>
+          </div>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button type="submit" class="btn btn-primary me-md-2">작성하기</button>
+          </div>
+      </div>
+  </form>
+  
+<!-- print review -->
+  <div class="p-3 mb-5 bg-body ">
+    <h5 class="border-bottom pb-2"></h5>
+  <div class="p-3 mb-5 bg-body ">
+      {% for review in reviews %}
+      <div class="card mb-3">
+        <div class="card-header">
+          {{review.user_name}}
+        </div>
+
+        <div class="card-body">
+          <p class="card-text">
+            {% if review.score == 5 %} ★★★★★
+            {% elif review.score == 4 %} ★★★★☆
+            {% elif review.score == 3 %} ★★★☆☆
+            {% elif review.score == 2 %} ★★☆☆☆
+            {% else %} ★☆☆☆☆
+            {% endif %}
+          </p>
+          <p class="card-text">{{review.content}}</p>
+        </div>    
+      </div>
+      {% endfor %}
+  </div>
+</div>
+  {% if not reviews %}
+  <div class="text-center mt-5">
+      <p class="text-muted">아직 리뷰가 없습니다. 첫 리뷰를 달아주세요!</p>
+  </div>
+  {% endif %}
+
+</div>
+
+{% endblock %} 

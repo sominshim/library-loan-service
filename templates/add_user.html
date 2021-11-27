@@ -2,22 +2,29 @@
 
 {% block content %}
 
-<h3 class="border-bottom pb-2">로그인</h3>
-<br/><br/>
-    
+<h3 class="border-bottom pb-2">회원가입</h3>
+<br/>
 <div class="shadow p-3 mb-5 bg-body rounded">
     <form method="POST">
+
         {{ form.csrf_token }}
         {% include "form_errors.html" %}
 
         {{ form.hidden_tag() }}
-        
+
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control") }}
+        <br/>
+
         {{ form.email.label(class="form-label") }}
         {{ form.email(class="form-control") }}
         <br/>
     
-        {{ form.password.label(class="form-label") }}
-        {{ form.password(class="form-control") }}
+        {{ form.password_hash.label(class="form-label") }}
+        {{ form.password_hash(class="form-control") }}
+        <br/>
+        {{ form.password_hash2.label(class="form-label") }}
+        {{ form.password_hash2(class="form-control") }}
         <br/>
 
         {{ form.submit(class="btn btn-primary") }}
