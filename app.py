@@ -97,7 +97,18 @@ def rental_record(id):
     # 책 재고가 없을 때
     if book.stock == 0:
         flash("재고가 없어 대출이 불가능합니다.")
-        return render_template('index.html', book_list= Book.query.all())
+        
+        book = Book.query
+        per_page = 8
+        page = request.args.get('page', 1, type=int)
+        pagination = book.paginate(page,per_page,error_out=False)
+        book_list = pagination.items
+        return render_template(
+                            "index.html",
+                            book_list= book_list,
+                            pagination=pagination,
+                            enumerate = enumerate
+                        )
 
     # 책 재고가 있을 때
     else:
@@ -114,7 +125,17 @@ def rental_record(id):
         db.session.add(rental)
         db.session.commit()
         flash("해당 도서를 대여하였습니다. 반납기한은 {}까지 입니다.".format(due_date.date()))
-        return render_template('index.html', book_list= Book.query.all())
+        book = Book.query
+        per_page = 8
+        page = request.args.get('page', 1, type=int)
+        pagination = book.paginate(page,per_page,error_out=False)
+        book_list = pagination.items
+        return render_template(
+            "index.html",
+            book_list= book_list,
+            pagination=pagination,
+            enumerate = enumerate
+        )
 
 # 반납하기
 @app.route('/book_return')
@@ -255,7 +276,7 @@ def book_detail(id):
                             reviews = reviews)
 
 # 책 리뷰
-@app.route("/book_review/<int:id>", methods=['POST'])
+@app.route("/book_review/<int:id>", methods=['POST', 'GET'])
 @login_required
 def book_review(id):
     action = request.form.get("act", type=str)
@@ -276,9 +297,8 @@ def book_review(id):
         for review in review_list:
             total_score += review.score
 
-        score = round((total_score / len(review_list)), 1)
         book = Book.query.filter(id==id).first()
-        book.score = score
+        book.score = total_score // len(review_list)
         
         db.session.commit()
         flash("댓글 작성 완료")
